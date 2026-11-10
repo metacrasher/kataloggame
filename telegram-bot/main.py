@@ -206,7 +206,7 @@ async def set_setting(update, context, key):
     if not is_admin(update): return
     value=" ".join(context.args).strip()
     if not value: await update.message.reply_text("Format: /"+update.message.text.split()[0][1:]+" nilai_baru"); return
-    db_write("store_settings","POST",{"key":key,"value":value},{"on_conflict":"key"})
+    db_write("store_settings","PATCH",{"value":value},{"key":f"eq.{key}"})
     await update.message.reply_text("✅ Pengaturan diperbarui.")
 
 async def setnama(u,c): await set_setting(u,c,"store_name")
