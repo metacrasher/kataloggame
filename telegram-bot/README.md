@@ -25,3 +25,9 @@ Bot ini mengelola tabel Supabase yang sama dengan dashboard FadStore: `products`
 - Lihat ringkasan, pesanan, dan pengaturan toko.
 
 Bot menggunakan service role hanya pada server worker, bukan browser. Jangan pernah memasukkan key tersebut ke `config.js`, HTML, atau JavaScript frontend.
+
+
+## Admin Telegram yang diizinkan
+Telegram user ID admin yang harus dipasang pada Railway:
+`ADMIN_TELEGRAM_ID=7460223477`
+ID ini bukan token rahasia, tetapi tetap batasi akses dashboard Railway.
