@@ -1,0 +1,1 @@
+[build]\nbuilder = "NIXPACKS"\n\n[deploy]\nstartCommand = "python main.py"\nrestartPolicyType = "ON_FAILURE"\nrestartPolicyMaxRetries = 10\n
