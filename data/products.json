@@ -1,0 +1,5 @@
+[
+  {"id":"ml-001","game":"Mobile Legends","title":"Akun Mythical Glory - Skin Premium","price":850000,"rank":"Mythical Glory","level":"Level 65","description":"Produk contoh. Ganti dengan detail akun milik penjual.","image":"https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1000&q=85","status":"available"},
+  {"id":"ff-001","game":"Free Fire","title":"Akun Elite - Bundle dan Skin Senjata","price":425000,"rank":"Heroic","level":"Level 72","description":"Produk contoh. Ganti dengan detail akun milik penjual.","image":"https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1000&q=85","status":"available"},
+  {"id":"pubg-001","game":"PUBG Mobile","title":"Akun Conqueror - Koleksi Outfit","price":1200000,"rank":"Ace","level":"Level 68","description":"Produk contoh. Ganti dengan detail akun milik penjual.","image":"https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?auto=format&fit=crop&w=1000&q=85","status":"available"}
+]
