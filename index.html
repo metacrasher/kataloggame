@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090d15">
+<title>FadStore — Admin Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="login-view" class="login-screen">
+  <div class="login-art"><div class="login-orb"></div><div class="login-brand"><span class="brand-mark">F</span><span>FAD<span>STORE</span><small>GAME ACCOUNT MARKET</small></span></div><div class="login-message"><div class="eyebrow">PRIVATE ADMIN AREA</div><h1>MANAGE<br><em>YOUR STORE.</em></h1><p>Kelola katalog, stok, dan pesanan FadStore dalam satu dashboard.</p></div><div class="login-bottom">FREE FIRE&nbsp; • &nbsp;MOBILE LEGENDS&nbsp; • &nbsp;ROBLOX</div></div>
+  <div class="login-form-wrap"><form id="login-form" class="login-form"><div class="eyebrow">WELCOME BACK</div><h2>Admin Login</h2><p>Masuk ke panel pengelolaan FadStore.</p><label>Email admin<input id="login-email" type="email" autocomplete="username" placeholder="admin@email.com" required></label><label>Password<input id="login-password" type="password" autocomplete="current-password" placeholder="Masukkan password" required></label><button class="btn primary full" type="submit">Masuk Dashboard <span>↗</span></button><div id="login-error" class="error"></div><small class="login-help">Belum menghubungkan Supabase? Ikuti petunjuk di <b>README-PANDUAN.md</b>.</small></form></div>
+</div>
+
+<div id="app-view" class="app-shell" hidden>
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="#"><span class="brand-mark">F</span><span>FAD<span>STORE</span><small>ADMIN CONSOLE</small></span></a>
+    <div class="side-label">WORKSPACE</div>
+    <button class="side-link active" data-page="overview"><span>▦</span> Ringkasan</button>
+    <button class="side-link" data-page="products"><span>◇</span> Produk & Stok</button>
+    <button class="side-link" data-page="orders"><span>▤</span> Riwayat Pesanan</button>
+    <button class="side-link" data-page="settings"><span>⚙</span> Pengaturan Toko</button>
+    <div class="sidebar-bottom"><div class="admin-chip"><span class="avatar">F</span><div><b>fadstore</b><small>Administrator</small></div></div><button id="logout" class="logout">↪ Keluar</button></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><button id="mobile-menu" class="mobile-menu">☰</button><div><span class="crumb">FADSTORE /</span> <b id="page-name">Ringkasan</b></div><div class="top-right"><span class="status-dot"></span><span>Admin aktif</span><span class="top-avatar">F</span></div></header>
+    <section class="page active" id="page-overview">
+      <div class="page-heading"><div><div class="eyebrow">STORE OVERVIEW</div><h1>Ringkasan Toko</h1><p>Pantau performa katalog dan pesanan FadStore.</p></div><button class="btn primary" data-go="products">+ Tambah Produk</button></div>
+      <div class="stat-grid"><article class="stat-card"><span>Total Produk</span><b id="stat-products">0</b><small>Semua katalog</small><i>◇</i></article><article class="stat-card"><span>Stok Tersedia</span><b id="stat-stock">0</b><small>Akun siap dipesan</small><i class="green">●</i></article><article class="stat-card"><span>Produk Terjual</span><b id="stat-sold">0</b><small>Ditandai terjual</small><i>↗</i></article><article class="stat-card"><span>Pesanan Masuk</span><b id="stat-orders">0</b><small>Riwayat pesanan</small><i>▤</i></article></div>
+      <div class="content-grid"><article class="panel"><div class="panel-head"><div><h3>Produk Terbaru</h3><p>Produk terakhir yang ditambahkan</p></div><button class="text-btn" data-go="products">Lihat semua →</button></div><div id="recent-products" class="table-wrap"></div></article><article class="panel quick-panel"><div class="panel-head"><div><h3>Akses Cepat</h3><p>Kelola toko dengan mudah</p></div></div><button class="quick-action" data-go="products"><span>＋</span><div><b>Tambah produk baru</b><small>Masukkan akun ke katalog</small></div><i>→</i></button><button class="quick-action" data-go="orders"><span>▤</span><div><b>Lihat riwayat pesanan</b><small>Periksa pesanan pelanggan</small></div><i>→</i></button><button class="quick-action" data-go="settings"><span>⚙</span><div><b>Pengaturan toko</b><small>Kontak dan identitas toko</small></div><i>→</i></button></article></div>
+    </section>
+
+    <section class="page" id="page-products">
+      <div class="page-heading"><div><div class="eyebrow">CATALOG MANAGEMENT</div><h1>Produk & Stok</h1><p>Tambah, edit, dan atur ketersediaan akun game.</p></div><button id="add-product" class="btn primary">＋ Tambah Produk</button></div>
+      <div class="panel"><div class="list-tools"><input id="product-search" placeholder="Cari nama akun..."><select id="product-filter"><option value="all">Semua status</option><option value="available">Tersedia</option><option value="sold">Terjual</option></select><select id="game-filter"><option value="all">Semua game</option><option>Free Fire</option><option>Mobile Legends</option><option>Roblox</option></select></div><div id="products-table" class="table-wrap"></div></div>
+    </section>
+
+    <section class="page" id="page-orders">
+      <div class="page-heading"><div><div class="eyebrow">ORDER MANAGEMENT</div><h1>Riwayat Pesanan</h1><p>Catat dan pantau pesanan pelanggan yang masuk melalui WhatsApp.</p></div><button id="add-order" class="btn primary">＋ Catat Pesanan</button></div>
+      <div class="notice">Pesanan WhatsApp tidak masuk otomatis ke dashboard. Catat pesanan secara manual di sini setelah pelanggan menghubungi admin.</div>
+      <div class="panel"><div class="list-tools"><input id="order-search" placeholder="Cari nama pelanggan / produk..."><select id="order-status-filter"><option value="all">Semua status</option><option>Menunggu</option><option>Diproses</option><option>Selesai</option><option>Dibatalkan</option></select></div><div id="orders-table" class="table-wrap"></div></div>
+    </section>
+
+    <section class="page" id="page-settings">
+      <div class="page-heading"><div><div class="eyebrow">STORE CONFIGURATION</div><h1>Pengaturan Toko</h1><p>Informasi kontak yang ditampilkan kepada pelanggan.</p></div></div>
+      <div class="panel settings-panel"><form id="settings-form"><label>Nama toko<input id="setting-name" value="FadStore" required></label><label>WhatsApp admin<input id="setting-wa" value="6285273114090" required></label><label>Telegram admin<input id="setting-telegram" value="@fadstore" required></label><button class="btn primary" type="submit">Simpan Pengaturan</button><p class="muted-note">Nomor WhatsApp menggunakan format internasional tanpa tanda +. Contoh: 6285273114090.</p></form></div>
+      <div class="panel security-panel"><h3>Akun Administrator</h3><p>Email login dikelola melalui Supabase Authentication. Untuk mengubah password, gunakan fitur reset password Supabase atau tambahkan alur reset password setelah konfigurasi email SMTP.</p></div>
+    </section>
+  </main>
+</div>
+
+<div class="modal-backdrop" id="product-modal"><form class="modal" id="product-form"><div class="modal-head"><div><div class="eyebrow">CATALOG ITEM</div><h2 id="product-modal-title">Tambah Produk</h2></div><button type="button" class="modal-close" data-close="product-modal">×</button></div><input type="hidden" id="p-id"><label>Game<select id="p-game" required><option>Free Fire</option><option>Mobile Legends</option><option>Roblox</option></select></label><label>Nama akun<input id="p-name" required placeholder="Contoh: Akun FF Sultan Bundle"></label><div class="form-row"><label>Harga (Rp)<input id="p-price" type="number" min="0" required placeholder="350000"></label><label>Status stok<select id="p-stock"><option value="true">Tersedia</option><option value="false">Terjual</option></select></label></div><div class="form-row"><label>Rank / Kategori<input id="p-rank" placeholder="Mythic / Heroic / Premium"></label><label>Level akun<input id="p-level" placeholder="Level 60"></label></div><label>Item / Keterangan singkat<input id="p-items" placeholder="50 Skin / Bundle langka"></label><label>URL foto produk<input id="p-image" type="url" placeholder="https://... (opsional)"></label><div class="modal-actions"><button type="button" class="btn secondary" data-close="product-modal">Batal</button><button class="btn primary" type="submit">Simpan Produk</button></div><div id="product-error" class="error"></div></form></div>
+
+<div class="modal-backdrop" id="order-modal"><form class="modal" id="order-form"><div class="modal-head"><div><div class="eyebrow">CUSTOMER ORDER</div><h2>Catat Pesanan</h2></div><button type="button" class="modal-close" data-close="order-modal">×</button></div><label>Nama pelanggan<input id="o-customer" required placeholder="Nama pembeli"></label><label>Produk / akun<input id="o-product" required placeholder="Nama akun yang dipesan"></label><div class="form-row"><label>Nominal (Rp)<input id="o-price" type="number" min="0" required></label><label>Status<select id="o-status"><option>Menunggu</option><option>Diproses</option><option>Selesai</option><option>Dibatalkan</option></select></label></div><label>Catatan<textarea id="o-note" rows="3" placeholder="Catatan transaksi (opsional)"></textarea></label><div class="modal-actions"><button type="button" class="btn secondary" data-close="order-modal">Batal</button><button class="btn primary" type="submit">Simpan Pesanan</button></div></form></div>
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script><script src="app.js"></script>
+</body></html>
