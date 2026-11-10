@@ -41,7 +41,8 @@ def menu():
         [InlineKeyboardButton("➕ Tambah stok", callback_data="add"), InlineKeyboardButton("📦 Daftar stok", callback_data="list")],
         [InlineKeyboardButton("✏️ Edit stok", callback_data="editpick"), InlineKeyboardButton("🗑 Hapus stok", callback_data="delpick")],
         [InlineKeyboardButton("🔄 Status READY/SOLD", callback_data="statuspick"), InlineKeyboardButton("📊 Ringkasan", callback_data="stats")],
-        [InlineKeyboardButton("🧾 Pesanan", callback_data="orders"), InlineKeyboardButton("⚙️ Pengaturan toko", callback_data="settings")]
+        [InlineKeyboardButton("🧾 Pesanan", callback_data="orders"), InlineKeyboardButton("➕ Catat pesanan", callback_data="addorder")],
+        [InlineKeyboardButton("⚙️ Pengaturan toko", callback_data="settings")]
     ])
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -101,8 +102,8 @@ async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if action == "status":
             db_write("products","PATCH",{"stock":not bool(p["stock"])}, {"id":f"eq.{pid}"})
             await q.message.reply_text(f"✅ Status *{p['name']}* sekarang {'READY' if not p['stock'] else 'SOLD'}.",parse_mode="Markdown"); return
-        STATES[ADMIN_ID] = {"action":"edit","step":"name","id":pid,"product":p}
-        await q.message.reply_text(f"Edit *{p['name']}*. Kirim nama baru, atau kirim - untuk mempertahankan nilai:",parse_mode="Markdown"); return
+        STATES[ADMIN_ID] = {"action":"edit","step":"game","id":pid,"product":p}
+        await q.message.reply_text(f"Edit *{p['name']}*. Game sekarang: {p['game']}. Kirim nama game baru (Free Fire / Mobile Legends / Roblox) atau - untuk tetap:",parse_mode="Markdown"); return
     if data == "stats":
         rows=db_get("products",{"select":"stock"})
         total=len(rows); ready=sum(1 for x in rows if x["stock"])
@@ -147,8 +148,27 @@ async def text_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if value.lower()!="lewati":
                 await update.message.reply_text("Kirim foto sebagai gambar Telegram, atau ketik lewati."); return
             save_product(s,None,update); return
+    if s["action"]=="addorder":
+        field=s["step"]
+        if field=="customer":
+            s["customer_name"]=value; s["step"]="product"; await update.message.reply_text("Nama produk/akun yang dipesan:"); return
+        if field=="product":
+            s["product_name"]=value; s["step"]="amount"; await update.message.reply_text("Nominal pesanan (angka saja):"); return
+        if field=="amount":
+            try: s["amount"]=int(value); assert s["amount"]>=0
+            except: await update.message.reply_text("Nominal harus angka 0 atau lebih. Coba lagi."); return
+            s["step"]="note"; await update.message.reply_text("Catatan pesanan (kirim - jika kosong):"); return
+        if field=="note":
+            row={"customer_name":s["customer_name"],"product_name":s["product_name"],"amount":s["amount"],"status":"Menunggu","note":"" if value=="-" else value}
+            db_write("orders","POST",row)
+            STATES.pop(ADMIN_ID,None); await update.message.reply_text("✅ Pesanan berhasil dicatat.",reply_markup=menu()); return
     if s["action"]=="edit":
         p=s["product"]; field=s["step"]
+        if field=="game":
+            if value!="-":
+                if value not in GAMES: await update.message.reply_text("Game harus Free Fire, Mobile Legends, atau Roblox. Atau kirim -."); return
+                p["game"]=value
+            s["step"]="name"; await update.message.reply_text(f"Nama sekarang {p['name']}. Kirim nama baru atau -:"); return
         if field=="name":
             if value!="-": p["name"]=value
             s["step"]="price"; await update.message.reply_text(f"Harga sekarang {p['price']}. Kirim harga baru atau -:"); return
@@ -170,7 +190,7 @@ async def text_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             if value=="-": p.pop("_keep_image",None)
             elif value.lower()=="hapus": p["image"]=None
             else: await update.message.reply_text("Kirim foto, hapus, atau -."); return
-            payload={k:p.get(k) for k in ["name","price","rank","level","items","image"]}
+            payload={k:p.get(k) for k in ["game","name","price","rank","level","items","image"]}
             db_write("products","PATCH",payload,{"id":f"eq.{s['id']}"})
             STATES.pop(ADMIN_ID,None); await update.message.reply_text("✅ Produk berhasil diperbarui.",reply_markup=menu()); return
 
